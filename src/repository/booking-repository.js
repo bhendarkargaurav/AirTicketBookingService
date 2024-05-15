@@ -16,11 +16,28 @@ class BookingRepository {
             throw new AppError(
                 'RepositoryError',
                 'Cannot create Booking',
-                'There was some issue creating the booking, please try again later',
-                StatusCodes.INTERNAL_SERVER_ERROR
-            )
+                'There was some issue updating the booking, please try again later',
+                StatusCodes.INTERNAL_SERVER_ERROR);
         }
     }
+
+    async update(bookingId, data) {
+        try {
+            const booking = await Booking.findByPk(bookingId);
+            if(data.Status) {
+                booking.Status = data.Status;
+            }
+            await booking.save();
+            return booking;
+        } catch (error) {
+            throw new AppError(
+                'RepositoryError',
+                'Cannot update Booking',
+                'There was some issue updating the booking, please try again later',
+                StatusCodes.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 
 module.exports = BookingRepository;
